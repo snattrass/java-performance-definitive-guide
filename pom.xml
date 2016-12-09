@@ -12,7 +12,7 @@
   <modules>
     <module>stock-api</module>
     <module>stock-impl</module>
-		<module>chaper04/stock-batching</module>
+		<module>chapter04/stock-batching</module>
   </modules>
 
   <properties>
