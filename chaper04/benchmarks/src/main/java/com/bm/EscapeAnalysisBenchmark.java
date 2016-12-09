@@ -1,4 +1,4 @@
-package net.sdo;
+package com.bm;
 
 import org.openjdk.jmh.annotations.*;
 

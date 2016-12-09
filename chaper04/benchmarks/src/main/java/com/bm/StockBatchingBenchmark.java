@@ -1,4 +1,4 @@
-package net.sdo;
+package com.bm;
 
 import java.text.DateFormat;
 import java.text.ParseException;
