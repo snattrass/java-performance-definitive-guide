@@ -12,7 +12,9 @@
   <modules>
     <module>stock-api</module>
     <module>stock-impl</module>
-		<module>chapter04/stock-batching</module>
+    <module>chapter04/stock-batching</module>
+    <module>chapter04/escape-analysis</module>
+	<module>chapter04/benchmarks</module>
   </modules>
 
   <properties>
