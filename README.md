@@ -1,1 +1,3 @@
-# java-performance-tuning
+# Java Performance Tuning
+
+Examples from the book.
