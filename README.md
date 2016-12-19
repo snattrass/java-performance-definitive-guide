@@ -1,3 +1,3 @@
-# Java Performance Tuning
+# Java Performance - The Definitive Guide
 
-Examples from the book.
+Examples from the book..
