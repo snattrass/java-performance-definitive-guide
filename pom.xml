@@ -15,6 +15,7 @@
     <module>stock-batching</module>
     <module>chapter04/escape-analysis</module>
 	  <module>chapter04/benchmarks</module>
+    <module>stock-war</module>
   </modules>
 
   <properties>
