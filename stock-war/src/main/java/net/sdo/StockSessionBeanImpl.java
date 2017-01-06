@@ -22,8 +22,8 @@ import net.sdo.stockimpl.StockPriceHistoryLogger;
 public class StockSessionBeanImpl implements StockSessionBeanLocal, StockSessionBeanRemote {
     private static int sleepTime;
     private static EntityManager mockEM;
-    @PersistenceContext(unitName = "StockPU")
-    protected EntityManager dbEM;
+//    @PersistenceContext(unitName = "StockPU")
+//    protected EntityManager dbEM;
 
     static {
         String s = System.getProperty("EJBSleepTime");
@@ -39,17 +39,17 @@ public class StockSessionBeanImpl implements StockSessionBeanLocal, StockSession
                                   Date endDate, boolean doMock, int impl) {
         StockPriceHistory sph;
         EntityManager em;
-        if (doMock) {
+//        if (doMock) {
             if (mockEM == null) {
                 mockEM = new MockStockPriceEntityManagerFactory(
                                 System.getProperty("MockEntityManager")).
                              createEntityManager();
             }
             em = mockEM;
-        }
-        else {
-            em = dbEM;
-        }
+//        }
+//        else {
+//            em = dbEM;
+//        }
         switch(impl) {
             case StockPriceHistory.STANDARD:
                 sph = new StockPriceHistoryImpl(symbol, startDate, endDate, em);
