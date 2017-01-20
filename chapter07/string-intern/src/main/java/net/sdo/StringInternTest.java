@@ -5,10 +5,13 @@
 package net.sdo;
 
 import extra166y.CustomConcurrentHashMap;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+
+import org.joda.time.Duration;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
 
 public class StringInternTest {
 
@@ -56,15 +59,27 @@ public class StringInternTest {
                 then = System.currentTimeMillis();
                 timeSelf();
                 now = System.currentTimeMillis();
-                System.out.println("Self took " + (now - then));
+                System.out.println("Self took " +  prettyPrintDuration(new Duration(now - then)));
                 break;
             case "jdk":
                 then = System.currentTimeMillis();
                 timeJDK();
                 now = System.currentTimeMillis();
-                System.out.println("JDK took " + (now - then));
+                System.out.println("JDK took " + prettyPrintDuration(new Duration(now - then)));
                 break;
         }
+    }
+
+    private static String prettyPrintDuration(Duration duration) {
+      PeriodFormatter formatter = new PeriodFormatterBuilder()
+          .appendMinutes()
+          .appendSuffix(" mins")
+          .appendSeconds()
+          .appendSuffix(" seconds")
+          .appendMillis()
+          .appendSuffix(" milli seconds")
+          .toFormatter();
+      return formatter.print(duration.toPeriod());
     }
 
     private static String makeRandomString() {
