@@ -8,70 +8,12 @@ import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 import net.sourceforge.sizeof.SizeOf;
 
 public class TestSizeOf {
 
-    private static class A {
-        private int i;
-    }
-
-    private static class B extends A {
-        private Locale l = Locale.US;
-    }
-
-    private static class C extends A {
-        private ConcurrentHashMap chm = new ConcurrentHashMap();
-    }
-
-    private static class ByteClass1 {
-        byte b;
-    }
-
-    private static class ByteClass2 {
-        byte b;
-        byte b2;
-    }
-
-    private static class ByteClass3 {
-        byte b;
-        byte b2;
-        byte b3;
-    }
-
-    private static class ByteClass4 {
-        byte b;
-        byte b2;
-        byte b3;
-        byte b4;
-    }
-
-    private static class EmptyClass {
-    }
-
-    private static class EmptyLocaleClass1 {
-        private Locale l;
-    }
-
-    private static class EmptyLocaleClass2 {
-        private Locale l;
-        private Locale l2;
-    }
-
-    private static class EmptyLocaleClass3 {
-        private Locale l;
-        private Locale l2;
-        private Locale l3;
-    }
-
-    private static class InitializedLocaleClass {
-
-        private Locale l = Locale.US;
-    }
-
-    public static void main(String[] args) {
+  public static void main(String[] args) {
         SizeOf.skipStaticField(true);
         System.out.println("Size of Calendar is " + SizeOf.deepSizeOf(Calendar.getInstance()));
         HashMap hm = new HashMap();
