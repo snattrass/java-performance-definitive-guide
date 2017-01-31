@@ -13,41 +13,42 @@ public class ContendedTest extends Thread {
     }
 
     private static DataHolder dh = new DataHolder();
-    private static long nLoops;
+    private static long numberOfLoops;
 
     public ContendedTest(Runnable r) {
         super(r);
     }
 
     public static void main(String[] args) throws Exception {
-        nLoops = Long.parseLong(args[0]);
-	int nThreads = Integer.parseInt(args[1]);
+        numberOfLoops = Long.parseLong(args[0]);
+	      int numberOfThreads = Integer.parseInt(args[1]);
+
         ContendedTest[] tests = new ContendedTest[4];
         tests[0] = new ContendedTest(() -> {
-            for (long i = 0; i < nLoops; i++) {
+            for (long i = 0; i < numberOfLoops; i++) {
                 dh.l1 += i;
             }
         });
         tests[1] = new ContendedTest(() -> {
-            for (long i = 0; i < nLoops; i++) {
+            for (long i = 0; i < numberOfLoops; i++) {
                 dh.l2 += i;
             }
         });
         tests[2] = new ContendedTest(() -> {
-            for (long i = 0; i < nLoops; i++) {
+            for (long i = 0; i < numberOfLoops; i++) {
                 dh.l3 += i;
             }
         });
         tests[3] = new ContendedTest(() -> {
-            for (long i = 0; i < nLoops; i++) {
+            for (long i = 0; i < numberOfLoops; i++) {
                 dh.l4 += i;
             }
         });
         long then = System.currentTimeMillis();
-        for (int i = 0; i < nThreads; i++) {
+        for (int i = 0; i < numberOfThreads; i++) {
             tests[i].start();
         }
-        for (int i = 0; i < nThreads; i++) {
+        for (int i = 0; i < numberOfThreads; i++) {
             tests[i].join();
         }
         long now = System.currentTimeMillis();
