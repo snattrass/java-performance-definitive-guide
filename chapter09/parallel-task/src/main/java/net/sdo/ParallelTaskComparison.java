@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ParallelTaskComparison {
-    private static int nThreads;
+    private static int numberOfThreads;
     private static boolean unbalance;
 
     private static class ForkJoinTask extends RecursiveTask<Integer> implements Callable<Integer> {
@@ -20,19 +20,20 @@ public class ParallelTaskComparison {
         public volatile double dummy;
         private int first;
         private int last;
-        private int nLeaves;
+        private int sequentialThreshold;
 
-        public ForkJoinTask(double[] d, int first, int last, int nLeaves) {
+        public ForkJoinTask(double[] d, int first, int last, int sequentialThreshold) {
             this.first = first;
             this.last = last;
             this.d = d;
-            this.nLeaves = nLeaves;
+            this.sequentialThreshold = sequentialThreshold;
         }
 
         @Override
         protected Integer compute() {
             int subCount;
-            if (last - first < nLeaves) {
+            if (last - first < sequentialThreshold) {
+                // sequential scan
                 subCount = 0;
                 for (int i = first; i <= last; i++) {
                     if (d[i] < 0.5) {
@@ -50,10 +51,10 @@ public class ParallelTaskComparison {
             } else {
                 int mid = (first + last) >>> 1;
                 ForkJoinTask left =
-                    new ForkJoinTask(d, first, mid, nLeaves);
+                    new ForkJoinTask(d, first, mid, sequentialThreshold);
                 left.fork();
                 ForkJoinTask right =
-                    new ForkJoinTask(d, mid + 1, last, nLeaves);
+                    new ForkJoinTask(d, mid + 1, last, sequentialThreshold);
                 right.fork();
                 subCount = right.join();
                 subCount += left.join();
@@ -101,12 +102,12 @@ public class ParallelTaskComparison {
 
         public Integer call() throws Exception {
             int curFirst = first;
-            int range = (last - first) / nThreads;
+            int range = (last - first) / numberOfThreads;
             int curLast = Math.min(last, first + range);
-            for (int i = 0; i < nThreads; i++) {
+            for (int i = 0; i < numberOfThreads; i++) {
                  tpe.execute(new ThreadPoolExecutorTask(d, curFirst, curLast, tpe));
                  curFirst = curLast + 1;
-                 if (i == nThreads - 2) {
+                 if (i == numberOfThreads - 2) {
                      curLast = Math.max(last, curLast + range);
                  }
                  else curLast = Math.min(last, curLast + range);
@@ -117,10 +118,10 @@ public class ParallelTaskComparison {
     }
 
     public static void main(String[] args) throws Exception {
-        int nLeaves = 10;
-        nThreads = Integer.parseInt(args[0]);
-        int nDoubles = Integer.parseInt(args[1]);
-        double[] d = new double[nDoubles];
+        int sequentialThreshold = 10;
+        numberOfThreads = Integer.parseInt(args[0]);
+        int arraySize = Integer.parseInt(args[1]);
+        double[] d = new double[arraySize];
         Random r = new Random(12345);
         for (int i = 0; i < d.length; i++) {
             d[i] = r.nextDouble();
@@ -130,15 +131,15 @@ public class ParallelTaskComparison {
         int mode = Integer.parseInt(args[2]);
         switch (mode) {
             case 0:
-                ThreadPoolExecutor tpe = new ThreadPoolExecutor(nThreads,
-                    nThreads, Long.MAX_VALUE,
+                ThreadPoolExecutor tpe = new ThreadPoolExecutor(numberOfThreads,
+                    numberOfThreads, Long.MAX_VALUE,
                     TimeUnit.SECONDS, new LinkedBlockingQueue());
-                c = new ThreadPoolExecutorTask(d, 0, nDoubles - 1, tpe);
+                c = new ThreadPoolExecutorTask(d, 0, arraySize - 1, tpe);
                 executor = tpe;
                 break;
             case 1:
-                executor = new ForkJoinPool(nThreads);
-                c = new ForkJoinTask(d, 0, nDoubles - 1, nLeaves);
+                executor = new ForkJoinPool(numberOfThreads);
+                c = new ForkJoinTask(d, 0, arraySize - 1, sequentialThreshold);
                 break;
             default:
                 throw new IllegalArgumentException("Bad arg2 switch");
@@ -146,7 +147,7 @@ public class ParallelTaskComparison {
         }
         unbalance = Boolean.parseBoolean(args[3]);
         if (args.length > 4) {
-            nLeaves = Integer.parseInt(args[4]);
+            sequentialThreshold = Integer.parseInt(args[4]);
         }
         long then = System.currentTimeMillis();
         Future<Integer> f = executor.submit(c);
@@ -159,7 +160,10 @@ public class ParallelTaskComparison {
             count = f.get();
         }
         long now = System.currentTimeMillis();
-        System.err.println("Calculated " + count + " in:  " + (now - then));
+        String technique = mode == 0 ? "ThreadPoolExecutor" : "ForkJoinPool";
+        System.out.println(technique + " ("  + arraySize + " elements, " + numberOfThreads + " threads, " +
+                           sequentialThreshold + " threshold) calculated " + count + " in : " + (now - then) + " ms");
+
         System.exit(0);
     }
 }
