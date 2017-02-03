@@ -4,11 +4,13 @@
 
 package net.sdo;
 
-public class ContendedTest extends Thread {
-    private static ContendedDataHolder dh = new ContendedDataHolder();
+import sun.misc.Contended;
+
+public class ContendedTest2 extends Thread {
+    private static UncontendedDataHolder dh = new UncontendedDataHolder();
     private static long numberOfLoops;
 
-    public ContendedTest(Runnable r) {
+    public ContendedTest2 (Runnable r) {
         super(r);
     }
 
@@ -16,23 +18,23 @@ public class ContendedTest extends Thread {
         numberOfLoops = Long.parseLong(args[0]);
 	      int numberOfThreads = Integer.parseInt(args[1]);
 
-        ContendedTest[] tests = new ContendedTest[4];
-        tests[0] = new ContendedTest(() -> {
+        ContendedTest2[] tests = new ContendedTest2[4];
+        tests[0] = new ContendedTest2(() -> {
             for (long i = 0; i < numberOfLoops; i++) {
                 dh.l1 += i;
             }
         });
-        tests[1] = new ContendedTest(() -> {
+        tests[1] = new ContendedTest2(() -> {
             for (long i = 0; i < numberOfLoops; i++) {
                 dh.l2 += i;
             }
         });
-        tests[2] = new ContendedTest(() -> {
+        tests[2] = new ContendedTest2(() -> {
             for (long i = 0; i < numberOfLoops; i++) {
                 dh.l3 += i;
             }
         });
-        tests[3] = new ContendedTest(() -> {
+        tests[3] = new ContendedTest2(() -> {
             for (long i = 0; i < numberOfLoops; i++) {
                 dh.l4 += i;
             }
