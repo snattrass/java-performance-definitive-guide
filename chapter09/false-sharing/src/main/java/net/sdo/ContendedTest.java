@@ -5,7 +5,8 @@
 package net.sdo;
 
 public class ContendedTest extends Thread {
-    private static ContendedDataHolder dh = new ContendedDataHolder();
+    private static boolean useContended = true;
+    private static DataHolder dh;
     private static long numberOfLoops;
 
     public ContendedTest(Runnable r) {
@@ -13,28 +14,31 @@ public class ContendedTest extends Thread {
     }
 
     public static void main(String[] args) throws Exception {
-        numberOfLoops = Long.parseLong(args[0]);
-	      int numberOfThreads = Integer.parseInt(args[1]);
+        useContended = Boolean.parseBoolean(args[0]);
+        dh = useContended ? new ContendedDataHolder() : new UncontendedDataHolder();
+
+        numberOfLoops = Long.parseLong(args[1]);
+	      int numberOfThreads = Integer.parseInt(args[2]);
 
         ContendedTest[] tests = new ContendedTest[4];
         tests[0] = new ContendedTest(() -> {
             for (long i = 0; i < numberOfLoops; i++) {
-                dh.l1 += i;
+                dh.inc1(i);
             }
         });
         tests[1] = new ContendedTest(() -> {
             for (long i = 0; i < numberOfLoops; i++) {
-                dh.l2 += i;
+                dh.inc2(i);
             }
         });
         tests[2] = new ContendedTest(() -> {
             for (long i = 0; i < numberOfLoops; i++) {
-                dh.l3 += i;
+                dh.inc3(i);
             }
         });
         tests[3] = new ContendedTest(() -> {
             for (long i = 0; i < numberOfLoops; i++) {
-                dh.l4 += i;
+                dh.inc4(i);
             }
         });
         long then = System.currentTimeMillis();
