@@ -11,6 +11,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import net.sdo.stockimpl.PrettyPrintDuration;
+
 import org.joda.time.Duration;
 import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
@@ -168,20 +170,9 @@ public class ParallelTaskComparison {
         long now = System.currentTimeMillis();
         String technique = mode == 0 ? "ThreadPoolExecutor" : "ForkJoinPool";
         System.out.println(technique + " ("  + arraySize + " elements, " + numberOfThreads + " threads, " +
-            sequentialThreshold + " threshold) ran in " + prettyPrintDuration(new Duration(now - then)));
+            sequentialThreshold + " threshold) ran in " + PrettyPrintDuration.out(now - then));
 
         System.exit(0);
     }
 
-  private static String prettyPrintDuration(Duration duration) {
-    PeriodFormatter formatter = new PeriodFormatterBuilder()
-        .appendMinutes()
-        .appendSuffix(" mins ")
-        .appendSeconds()
-        .appendSuffix(" seconds ")
-        .appendMillis()
-        .appendSuffix(" milli-seconds")
-        .toFormatter();
-    return formatter.print(duration.toPeriod());
-  }
 }

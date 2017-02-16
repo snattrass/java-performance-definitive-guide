@@ -24,5 +24,10 @@
 			<groupId>java-performance-definitive-guide</groupId>
 			<artifactId>stock-api</artifactId>
 		</dependency>
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>2.9.7</version>
+    </dependency>
 	</dependencies>
 </project>
