@@ -28,11 +28,17 @@
             <artifactId>stock-impl</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.oracle.jdbc</groupId>
-            <artifactId>ojdbc7</artifactId>
-            <version>12.1.0.2</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/ojdbc7.jar</systemPath>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.191</version>
         </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>com.oracle.jdbc</groupId>-->
+            <!--<artifactId>ojdbc7</artifactId>-->
+            <!--<version>12.1.0.2</version>-->
+            <!--<scope>system</scope>-->
+            <!--<systemPath>${project.basedir}/lib/ojdbc7.jar</systemPath>-->
+        <!--</dependency>-->
     </dependencies>
 </project>

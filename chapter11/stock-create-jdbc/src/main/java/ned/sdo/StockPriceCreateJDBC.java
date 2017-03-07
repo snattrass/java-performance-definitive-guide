@@ -21,7 +21,6 @@ import net.sdo.stock.StockPriceUtils;
 import net.sdo.stockimpl.MockStockPriceEntityManagerFactory;
 import net.sdo.stockimpl.StockPriceEagerLazyImpl;
 import net.sdo.stockimpl.StockPricePK;
-import oracle.jdbc.OracleConnection;
 
 public class StockPriceCreateJDBC extends Thread {
 
@@ -58,8 +57,8 @@ public class StockPriceCreateJDBC extends Thread {
         System.out.println(Thread.currentThread() + ": Starting");
         try (Connection c = DriverManager.getConnection(URL, user, pw)) {
             c.setAutoCommit(autocommit);
-            ((OracleConnection) c).setImplicitCachingEnabled(true);
-            ((OracleConnection) c).setStatementCacheSize(10);
+//            ((OracleConnection) c).setImplicitCachingEnabled(true);
+//            ((OracleConnection) c).setStatementCacheSize(10);
             try (PreparedStatement ps = c.prepareStatement(insertStockSQL);
                  PreparedStatement ps2 = c.prepareStatement(insertOptionSQL)) {
                 for (int i = startStock; i < numStocks; i++) {
@@ -128,6 +127,9 @@ public class StockPriceCreateJDBC extends Thread {
     }
 
     public static void main(String[] args) throws ParseException {
+        Thread h2WebserverThread = new Thread(new H2WebServerTask());
+        h2WebserverThread.start();
+
         int curArg = 0;
         URL = args[curArg++];
         user = args[curArg++];
