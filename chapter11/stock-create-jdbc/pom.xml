@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>java-performance-definitive-guide</groupId>
+    <artifactId>stock-create-jdbc</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <parent>
+        <groupId>java-performance-definitive-guide</groupId>
+        <artifactId>parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>java-performance-definitive-guide</groupId>
+            <artifactId>stock-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>java-performance-definitive-guide</groupId>
+            <artifactId>stock-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle.jdbc</groupId>
+            <artifactId>ojdbc7</artifactId>
+            <version>12.1.0.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/ojdbc7.jar</systemPath>
+        </dependency>
+    </dependencies>
+</project>
