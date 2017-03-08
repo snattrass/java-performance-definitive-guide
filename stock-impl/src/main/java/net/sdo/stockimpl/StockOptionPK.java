@@ -4,13 +4,14 @@
 
 package net.sdo.stockimpl;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Embeddable
-public class StockOptionPK {
+public class StockOptionPK implements Serializable {
     private String symbol;
     @Temporal(TemporalType.DATE)
     private Date priceDate;
